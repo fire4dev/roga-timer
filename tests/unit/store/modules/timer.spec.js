@@ -1,7 +1,7 @@
 import { mutations, actions } from '@/store/modules/timer'
 
 // Destruct mutations
-const { FOCUS_TIME, SHORT_BREAK, LONG_BREAK } = mutations
+const { FOCUS_TIME, SHORT_BREAK, LONG_BREAK, AUTO_START } = mutations
 
 // Mock context for testing actions
 const context = {
@@ -31,6 +31,12 @@ describe('Vuex timer module', () => {
       LONG_BREAK(state, 10)
       expect(state.longBreak).toBe(10)
     })
+
+    it('MUTATES AUTO START', () => {
+      const state = { autoStart: false }
+      AUTO_START(state, true)
+      expect(state.autoStart).toBe(true)
+    })
   })
 
   describe('actions', () => {
@@ -52,6 +58,13 @@ describe('Vuex timer module', () => {
       actions.setLongBreak(context, 15)
       expect(context.commit).toHaveBeenCalled()
       expect(context.state.longBreak).toBe(15)
+      context.commit.mockClear()
+    })
+
+    it('set auto start', () => {
+      actions.setAutoStart(context, false)
+      expect(context.commit).toHaveBeenCalled()
+      expect(context.state.autoStart).toBe(false)
       context.commit.mockClear()
     })
   })
