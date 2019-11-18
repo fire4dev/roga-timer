@@ -12,7 +12,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    namespaced: true,
     timer
   }
 })

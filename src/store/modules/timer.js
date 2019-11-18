@@ -1,7 +1,8 @@
 const state = {
-  focusTime: 25,
-  shortBreak: 5,
-  longBreak: 15
+  focusTime: 50,
+  shortBreak: 10,
+  longBreak: 2,
+  autoStart: false
 }
 
 const getters = {
@@ -15,6 +16,10 @@ const getters = {
 
   longBreak (state) {
     return state.longBreak
+  },
+
+  autoStart (state) {
+    return state.autoStart
   }
 }
 
@@ -29,6 +34,10 @@ export const mutations = {
 
   LONG_BREAK (state, payload) {
     state.longBreak = payload
+  },
+
+  AUTO_START (state, payload) {
+    state.autoStart = payload
   }
 }
 
@@ -43,10 +52,15 @@ export const actions = {
 
   setLongBreak ({ commit }, longBreak) {
     commit('LONG_BREAK', longBreak)
+  },
+
+  setAutoStart ({ commit }, autoStart) {
+    commit('AUTO_START', autoStart)
   }
 }
 
 export default {
+  namespaced: true,
   state,
   getters,
   mutations,
