@@ -128,7 +128,7 @@ export default {
       }
     },
     configTimer () {
-      //add the config screen
+      // add the config screen
     },
     padTime (time) {
       return (time < 10 ? '0' : '') + time
