@@ -1,6 +1,6 @@
 <template>
-  <div class="timer">
-    <h2 class="title">{{title}}</h2>
+  <div class="timer" :style="styleTimerBackground">
+    <h1 class="title">{{title}}</h1>
 
     <div id="countdown">
       <div id="minutes">{{minutes}}</div>
@@ -30,9 +30,21 @@
         id="reset"
         class="button"
         v-if="resetButton"
-        @click="resetTimer">
+        @click="resetCurrentTime">
           <i class="fas fa-undo"></i>
       </button>
+
+      <button
+        id="forward"
+        class="button"
+        @click="forwardTimer">
+        <i class="fas fa-forward"></i>
+      </button>
+    </div>
+
+    <div>
+      <label> FocusTimerCount: {{focusTimeCount}}</label>
+      <label> BreakTimerCount: {{breakTimeCount}}</label>
     </div>
   </div>
 </template>
@@ -47,12 +59,19 @@ export default {
       totalTime: 0,
       resetButton: false,
       title: 'Let the countdown begin!!',
-      inFocusTime: true
+      inFocusTime: true,
+      inBreakTime: false,
+      inLongBreakTime: false,
+      focusTimeCount: 1,
+      breakTimeCount: 0,
+      LongBreakTimeCount: 0,
+      styleTimerBackground: 'background-color: #209cee'
     }
   },
 
   beforeMount () {
     this.totalTime = this.focusTime * 60
+    if (this.autoStart) { this.startTimer() }
   },
 
   methods: {
@@ -66,8 +85,32 @@ export default {
       this.resetButton = true
     },
     resetTimer () {
-      const time = this.inFocusTime ? this.shortBreak : this.focusTime
-      this.inFocusTime = !this.inFocusTime
+      let time = 0
+      // Define next timer
+      if (this.inLongBreakTime) {
+        time = this.focusTime
+        this.inFocusTime = true
+        this.inLongBreakTime = false
+        this.inBreakTime = false
+      } else if (this.inFocusTime) {
+        time = this.shortBreak
+        this.inFocusTime = false
+        this.inLongBreakTime = false
+        this.inBreakTime = true
+      } else {
+        if (this.breakTimeCount > 0 && this.breakTimeCount % 2 === 0) {
+          time = this.longBreak
+          this.inFocusTime = false
+          this.inLongBreakTime = true
+          this.inBreakTime = false
+        } else {
+          time = this.focusTime
+          this.inFocusTime = true
+          this.inLongBreakTime = false
+          this.inBreakTime = false
+        }
+      }
+
       this.totalTime = (time * 60)
       clearInterval(this.timer)
       this.timer = null
@@ -86,6 +129,17 @@ export default {
         this.totalTime = 0
         this.resetTimer()
       }
+    },
+    forwardTimer () {
+      this.resetTimer()
+    },
+    resetCurrentTime () {
+      this.totalTime = this.getCurrentTimer() * 60
+    },
+    getCurrentTimer () {
+      if (this.inFocusTime) { return this.focusTime }
+      if (this.inBreakTime) { return this.shortBreak }
+      if (this.inLongBreakTime) { return this.longBreak }
     }
   },
 
@@ -104,16 +158,35 @@ export default {
       const seconds = this.totalTime - (this.minutes * 60)
       return this.padTime(seconds)
     }
+  },
+
+  watch: {
+    inFocusTime (val) {
+      if (val === false) { return }
+      this.title = 'Time to focus!'
+      this.styleTimerBackground = 'background-color: #209cee'
+      this.focusTimeCount += 1
+    },
+    inBreakTime (val) {
+      if (val === false) { return }
+      this.title = 'A little break to breath!'
+      this.styleTimerBackground = 'background-color: #fd0000'
+      this.breakTimeCount += 1
+    },
+    inLongBreakTime (val) {
+      if (val === false) { return }
+      this.title = 'Lets have a long break'
+      this.styleTimerBackground = 'background-color: #8b0000'
+      this.longBreakTimeCount += 1
+    }
   }
 }
 </script>
 
 <style lang="scss">
   $timer-padding: 80px;
-  $bg-primary: #209cee;
 
   .timer {
-    background-color: $bg-primary;
     color: #fff;
     height: calc(100vh - 80px * 2);
     display: flex;
@@ -129,9 +202,9 @@ export default {
     }
 
     .button {
-      background-color: $bg-primary;
       border: none;
-      color: white;
+      background-color: transparent;
+      color: #fff;
       padding: 0;
       text-align: center;
       text-decoration: none;
