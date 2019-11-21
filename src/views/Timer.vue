@@ -1,7 +1,14 @@
 <template>
   <div class="timer" :style="styleTimerBackground">
+    <div align='end'>
+      <button
+        id="forward"
+        class="button"
+        @click="configTimer">
+        <i class="fas fa-cog"></i>
+      </button>
+    </div>
     <h1 class="title">{{title}}</h1>
-
     <div id="countdown">
       <div id="minutes">{{minutes}}</div>
       <div id="separator">:</div>
@@ -40,6 +47,7 @@
         @click="forwardTimer">
         <i class="fas fa-forward"></i>
       </button>
+
     </div>
 
     <div>
@@ -119,6 +127,9 @@ export default {
         this.startTimer()
       }
     },
+    configTimer () {
+      //add the config screen
+    },
     padTime (time) {
       return (time < 10 ? '0' : '') + time
     },
@@ -184,11 +195,11 @@ export default {
 </script>
 
 <style lang="scss">
-  $timer-padding: 80px;
+  $timer-padding: 10px;
 
   .timer {
     color: #fff;
-    height: calc(100vh - 80px * 2);
+    height: calc(100vh - 10px * 2);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
