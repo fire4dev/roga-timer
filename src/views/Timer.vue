@@ -131,7 +131,7 @@ export default {
       }
     },
     forwardTimer () {
-      this.totalTime = 0
+      this.resetTimer()
     },
     resetCurrentTime () {
       this.totalTime = this.getCurrentTimer() * 60
@@ -203,6 +203,8 @@ export default {
 
     .button {
       border: none;
+      background-color: transparent;
+      color: #fff;
       padding: 0;
       text-align: center;
       text-decoration: none;
