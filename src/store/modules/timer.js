@@ -1,8 +1,8 @@
 const state = {
-  focusTime: 50,
-  shortBreak: 10,
-  longBreak: 2,
-  autoStart: false
+  focusTime: 25,
+  shortBreak: 5,
+  longBreak: 30,
+  autoStart: true
 }
 
 const getters = {
