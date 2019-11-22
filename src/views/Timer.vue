@@ -1,5 +1,9 @@
 <template>
   <div class="timer" :style="styleTimerBackground">
+    <div id = "intro" style = "text-align:center; position:absolute; top:-10px; left:10px;">
+      <h2>{{ time_now }}</h2>
+      <h2 style="position:relative; bottom:15px;">{{ date_now }}</h2>
+    </div>
     <div align='end'>
       <button
         id="forward"
@@ -75,10 +79,14 @@ export default {
       focusTimeCount: 1,
       breakTimeCount: 0,
       LongBreakTimeCount: 0,
-      styleTimerBackground: 'background-color: #209cee'
+      styleTimerBackground: 'background-color: #209cee',
+      time_now: '',
+      date_now: ''
     }
   },
-
+  created () {
+    setInterval(this.getNow, 1000)
+  },
   beforeMount () {
     this.totalTime = this.focusTime * 60
   },
@@ -87,6 +95,17 @@ export default {
     startTimer () {
       this.timer = setInterval(() => this.countdown(), 1000)
       this.resetButton = true
+    },
+    getNow: function () {
+      // get the time and date now
+      const today = new Date()
+      const hours = today.getHours()
+      const minutes = today.getMinutes()
+      const seconds = today.getSeconds()
+      const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear()
+      const time = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds
+      this.date_now = date
+      this.time_now = time
     },
     stopTimer () {
       clearInterval(this.timer)
@@ -139,10 +158,10 @@ export default {
         imageWidth: 100,
         imageHeight: 80,
         html:
-          '<div><label style="color:#9e9e9e; font-family:arial; font-size:14px;">Focus Time value </label><input style="height:30px; font-size:16px; width:70px; margin-bottom:-1px;" placeholder="25 min" id="swal-input1" name="focustime" type="number" class="swal2-input"></div>' +
-          '<div><label style="color:#9e9e9e; font-family:arial; font-size:14px;">Break Time value </label><input style="height:30px; font-size:16px; width:70px; margin-bottom:-1px;" placeholder="5 min" id="swal-input2" name="breaktime" type="number" class="swal2-input"></div>' +
-          '<div><label style="color:#9e9e9e; font-family:arial; font-size:14px;">Long Break Time value </label><input style="height:30px; font-size:16px; width:70px; margin-bottom:-1px;" placeholder="30 min" id="swal-input3" name="longbreaktime" type="number" class="swal2-input"></div>' +
-          '<div style="position:relative; top:15px;"><label style="color:#9e9e9e; font-family:arial; font-size:14px;">Auto Start </label><br><select><option id="swal-option1" name="autostart" value="select an option" class="swal1-option">Select an Option</option><option id="swal-option2" name="autostart" value="true" class="swal2-option">True</option><option id="swal-option3" name="autostart" value="false" class="swal2-option">False</option></select></div>',
+          '<div><label style="color:#9c9c9c; font-family:arial; font-size:14px;">Focus Time value </label><input style="height:30px; font-size:16px; width:70px; margin-bottom:-1px;" placeholder="25 min" id="swal-input1" name="focustime" type="number" class="swal2-input"></div>' +
+          '<div><label style="color:#9c9c9c; font-family:arial; font-size:14px;">Break Time value </label><input style="height:30px; font-size:16px; width:70px; margin-bottom:-1px;" placeholder="5 min" id="swal-input2" name="breaktime" type="number" class="swal2-input"></div>' +
+          '<div><label style="color:#9c9c9c; font-family:arial; font-size:14px;">Long Break Time value </label><input style="height:30px; font-size:16px; width:70px; margin-bottom:-1px;" placeholder="30 min" id="swal-input3" name="longbreaktime" type="number" class="swal2-input"></div>' +
+          '<div style="position:relative; top:15px;"><label style="color:#9c9c9c; font-family:arial; font-size:14px;">Auto Start </label><br><select><option id="swal-option1" name="autostart" value="select an option" class="swal1-option">Select an Option</option><option id="swal-option2" name="autostart" value="true" class="swal2-option">True</option><option id="swal-option3" name="autostart" value="false" class="swal2-option">False</option></select></div>',
         focusConfirm: false,
         preConfirm: () => {
           // return [
@@ -227,11 +246,11 @@ export default {
 </script>
 
 <style lang="scss">
-  $timer-padding: 10px;
+  $timer-padding: 2px;
 
   .timer {
     color: #fff;
-    height: calc(100vh - 10px * 2);
+    height: calc(100vh - 2px * 2);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
