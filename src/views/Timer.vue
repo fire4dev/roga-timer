@@ -172,11 +172,14 @@ export default {
           newFocusTime = document.getElementById('swal-input1').value
           newShortBreak = document.getElementById('swal-input2').value
           newLongBreak = document.getElementById('swal-input3').value
-          // console.log(newFocusTime)
-          // console.log(newShortBreak)
-          // console.log(newLongBreak)
+          console.log(newFocusTime)
+          console.log(newShortBreak)
+          console.log(newLongBreak)
           if (formValues) {
-            return formValues
+            return [
+              newFocusTime,
+              newShortBreak,
+              newLongBreak]
           }
         }
       })
