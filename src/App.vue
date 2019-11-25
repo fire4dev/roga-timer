@@ -1,8 +1,42 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <v-app>
+    <v-navigation-drawer app :value="showDrawer">
+
+    </v-navigation-drawer>
+
+    <v-content :class="currentColor">
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters({
+      timerState: 'timer/currentState'
+    }),
+
+    showDrawer () {
+      return this.$store.state.drawer
+    },
+
+    currentColor () {
+      const stateColors = {
+        focus: this.$store.state.focusColor,
+        'short-break': this.$store.state.shortbreakColor,
+        'long-break': this.$store.state.longbreakColor
+      }
+
+      return stateColors[this.timerState]
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 html, body {
