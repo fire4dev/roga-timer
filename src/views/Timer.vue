@@ -1,14 +1,15 @@
 <template>
   <div class="timer" :style="styleTimerBackground">
     <div id = "intro" style = "text-align:center; position:absolute; top:-10px; left:10px;">
-      <h2>{{ time_now }}</h2>
-      <h2 style="position:relative; bottom:15px;">{{ date_now }}</h2>
+      <h3>{{ time_now }}</h3>
+      <h3 style="position:relative; bottom:15px;">{{ date_now }}</h3>
     </div>
     <div align='end'>
       <button
         id="forward"
         class="button"
-        @click="settingTimer">
+        @click="settingTimer"
+        style="font-size:24px;">
         <i class="fas fa-cog"></i>
       </button>
     </div>
@@ -28,14 +29,14 @@
         @click="startTimer">
           <i class="far fa-play-circle"></i>
       </button>
-
-      <button
+      <!-- this feature can be activated by user on settings screen -->
+      <!-- <button
         id="stop"
         class="button"
         v-if="timer"
         @click="stopTimer">
           <i class="far fa-pause-circle"></i>
-      </button>
+      </button> -->
 
       <button
         id="reset"
@@ -108,7 +109,7 @@ export default {
       this.time_now = time
     },
     stopTimer () {
-      clearInterval(this.timer)
+      // clearInterval(this.timer) // this feature can be activated by user on settings screen
       this.timer = null
       this.resetButton = true
     },
@@ -172,11 +173,11 @@ export default {
           newFocusTime = document.getElementById('swal-input1').value
           newShortBreak = document.getElementById('swal-input2').value
           newLongBreak = document.getElementById('swal-input3').value
-          console.log(newFocusTime)
-          console.log(newShortBreak)
-          console.log(newLongBreak)
+          // console.log(newFocusTime)
+          // console.log(newShortBreak)
+          // console.log(newLongBreak)
           if (formValues) {
-            console.log(formValues)
+            return formValues
           }
         }
       })
