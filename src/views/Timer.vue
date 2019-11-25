@@ -1,5 +1,5 @@
 <template>
-  <div class="timer" :style="styleTimerBackground">
+  <section class="timer">
     <h1 class="title">{{title}}</h1>
 
     <div id="countdown">
@@ -9,48 +9,30 @@
     </div>
 
     <div id="buttons">
+      <v-btn icon round dark v-if="!timer"
+        @click="startTimer" x-large>
+        <v-icon>mdi-play</v-icon>
+      </v-btn>
 
-      <button
-        id="start"
-        class="button"
-        v-if="!timer"
-        @click="startTimer">
-          <i class="far fa-play-circle"></i>
-      </button>
+      <v-btn icon round dark v-if="timer"
+        @click="stopTimer" x-large>
+        <v-icon>mdi-pause</v-icon>
+      </v-btn>
 
-      <button
-        id="stop"
-        class="button"
-        v-if="timer"
-        @click="stopTimer">
-          <i class="far fa-pause-circle"></i>
-      </button>
+      <v-btn icon round dark  v-if="resetButton"
+        @click="resetCurrentTime" x-large>
+        <v-icon>mdi-undo</v-icon>
+      </v-btn>
 
-      <button
-        id="reset"
-        class="button"
-        v-if="resetButton"
-        @click="resetCurrentTime">
-          <i class="fas fa-undo"></i>
-      </button>
-
-      <button
-        id="forward"
-        class="button"
-        @click="forwardTimer">
-        <i class="fas fa-forward"></i>
-      </button>
+      <v-btn icon round dark @click="forwardTimer" x-large>
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
     </div>
-
-    <div>
-      <label> FocusTimerCount: {{focusTimeCount}}</label>
-      <label> BreakTimerCount: {{breakTimeCount}}</label>
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -58,20 +40,23 @@ export default {
       timer: null,
       totalTime: 0,
       resetButton: false,
-      title: 'Let the countdown begin!!',
+      title: 'Time to focus!',
       inFocusTime: true,
       inBreakTime: false,
       inLongBreakTime: false,
       focusTimeCount: 1,
       breakTimeCount: 0,
-      LongBreakTimeCount: 0,
-      styleTimerBackground: 'background-color: #209cee'
+      LongBreakTimeCount: 0
     }
   },
 
   beforeMount () {
     this.totalTime = this.focusTime * 60
-    if (this.autoStart) { this.startTimer() }
+    // if (this.autoStart) { this.startTimer() }
+  },
+
+  mounted () {
+    // this.$store.dispatch('setDrawer', true)
   },
 
   methods: {
@@ -93,22 +78,22 @@ export default {
         this.inLongBreakTime = false
         this.inBreakTime = false
       } else if (this.inFocusTime) {
-        time = this.shortBreak
-        this.inFocusTime = false
-        this.inLongBreakTime = false
-        this.inBreakTime = true
-      } else {
-        if (this.breakTimeCount > 0 && this.breakTimeCount % 2 === 0) {
+        if (this.focusTimeCount > 0 && this.focusTimeCount % 4 === 0) {
           time = this.longBreak
           this.inFocusTime = false
           this.inLongBreakTime = true
           this.inBreakTime = false
         } else {
-          time = this.focusTime
-          this.inFocusTime = true
+          time = this.shortBreak
+          this.inFocusTime = false
           this.inLongBreakTime = false
-          this.inBreakTime = false
+          this.inBreakTime = true
         }
+      } else {
+        time = this.focusTime
+        this.inFocusTime = true
+        this.inLongBreakTime = false
+        this.inBreakTime = false
       }
 
       this.totalTime = (time * 60)
@@ -140,7 +125,10 @@ export default {
       if (this.inFocusTime) { return this.focusTime }
       if (this.inBreakTime) { return this.shortBreak }
       if (this.inLongBreakTime) { return this.longBreak }
-    }
+    },
+    ...mapActions({
+      'setTimerState': 'timer/setCurrentState'
+    })
   },
 
   computed: {
@@ -164,19 +152,19 @@ export default {
     inFocusTime (val) {
       if (val === false) { return }
       this.title = 'Time to focus!'
-      this.styleTimerBackground = 'background-color: #209cee'
+      this.setTimerState('focus')
       this.focusTimeCount += 1
     },
     inBreakTime (val) {
       if (val === false) { return }
       this.title = 'A little break to breath!'
-      this.styleTimerBackground = 'background-color: #fd0000'
+      this.setTimerState('short-break')
       this.breakTimeCount += 1
     },
     inLongBreakTime (val) {
       if (val === false) { return }
       this.title = 'Lets have a long break'
-      this.styleTimerBackground = 'background-color: #8b0000'
+      this.setTimerState('long-break')
       this.longBreakTimeCount += 1
     }
   }
@@ -199,20 +187,6 @@ export default {
       display: flex;
       justify-content: center;
       color: #FFF;
-    }
-
-    .button {
-      border: none;
-      background-color: transparent;
-      color: #fff;
-      padding: 0;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 3em;
-      margin: 4px 5px;
-      border-radius: 50%;
-      cursor: pointer;
     }
   }
 </style>
