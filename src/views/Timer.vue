@@ -1,9 +1,5 @@
 <template>
   <div class="timer" :style="styleTimerBackground">
-    <div id = "intro" style = "text-align:center; position:absolute; top:-10px; left:10px;">
-      <h3>{{ time_now }}</h3>
-      <h3 style="position:relative; bottom:15px;">{{ date_now }}</h3>
-    </div>
     <div align='end'>
       <button
         id="forward"
@@ -13,7 +9,12 @@
         <i class="fas fa-cog"></i>
       </button>
     </div>
-    <h1 class="title">{{title}}</h1>
+    <div>
+      <h1 class="title">{{title}}</h1>
+      <div id = "time" >
+        <h2>{{ time_now }}</h2>
+      </div>
+    </div>
     <div id="countdown">
       <div id="minutes">{{minutes}}</div>
       <div id="separator">:</div>
@@ -54,11 +55,11 @@
       </button>
 
     </div>
-
-    <div>
+    <!-- temporaily comment -->
+    <!-- <div>
       <label> FocusTimerCount: {{focusTimeCount}}</label>
       <label> BreakTimerCount: {{breakTimeCount}}</label>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -98,14 +99,12 @@ export default {
       this.resetButton = true
     },
     getNow: function () {
-      // get the time and date now
+      // get the time now
       const today = new Date()
       const hours = today.getHours()
       const minutes = today.getMinutes()
       const seconds = today.getSeconds()
-      const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear()
       const time = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds
-      this.date_now = date
       this.time_now = time
     },
     stopTimer () {
