@@ -1,7 +1,7 @@
 import { mutations, actions } from '@/store/modules/timer'
 
 // Destruct mutations
-const { FOCUS_TIME, SHORT_BREAK, LONG_BREAK, AUTO_START } = mutations
+const { FOCUS_TIME, SHORT_BREAK, LONG_BREAK, AUTO_START, CURRENT_STATE } = mutations
 
 // Mock context for testing actions
 const context = {
@@ -37,6 +37,16 @@ describe('Vuex timer module', () => {
       AUTO_START(state, true)
       expect(state.autoStart).toBe(true)
     })
+
+    it('MUTATES CURRENT STATE', () => {
+      const state = { currentState: 'focus' }
+      CURRENT_STATE(state, 'short-break')
+      expect(state.currentState).toBe('short-break')
+    })
+  })
+
+  beforeEach(() => {
+    context.commit.mockClear()
   })
 
   describe('actions', () => {
@@ -44,28 +54,30 @@ describe('Vuex timer module', () => {
       actions.setFocusTime(context, 30)
       expect(context.commit).toHaveBeenCalled()
       expect(context.state.focusTime).toBe(30)
-      context.commit.mockClear()
     })
 
     it('set short break', () => {
       actions.setShortBreak(context, 5)
       expect(context.commit).toHaveBeenCalled()
       expect(context.state.shortBreak).toBe(5)
-      context.commit.mockClear()
     })
 
     it('set long break', () => {
       actions.setLongBreak(context, 15)
       expect(context.commit).toHaveBeenCalled()
       expect(context.state.longBreak).toBe(15)
-      context.commit.mockClear()
     })
 
     it('set auto start', () => {
       actions.setAutoStart(context, false)
       expect(context.commit).toHaveBeenCalled()
       expect(context.state.autoStart).toBe(false)
-      context.commit.mockClear()
+    })
+
+    it('set current state', () => {
+      actions.setCurrentState(context, 'focus')
+      expect(context.commit).toHaveBeenCalled()
+      expect(context.state.currentState).toBe('focus')
     })
   })
 })
