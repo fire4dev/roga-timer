@@ -178,11 +178,11 @@ export default {
 </script>
 
 <style lang="scss">
-  $timer-padding: 2px;
+  $timer-padding: 80px;
 
   .timer {
     color: #fff;
-    height: calc(100vh - 2px * 2);
+    height: calc(100vh - 80px * 2);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
