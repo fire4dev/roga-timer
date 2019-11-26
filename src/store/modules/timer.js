@@ -1,8 +1,9 @@
 const state = {
   focusTime: 25,
   shortBreak: 5,
-  longBreak: 30,
-  autoStart: true
+  longBreak: 15,
+  autoStart: true,
+  currentState: 'focus'
 }
 
 const getters = {
@@ -20,6 +21,10 @@ const getters = {
 
   autoStart (state) {
     return state.autoStart
+  },
+
+  currentState (state) {
+    return state.currentState
   }
 }
 
@@ -38,6 +43,10 @@ export const mutations = {
 
   AUTO_START (state, payload) {
     state.autoStart = payload
+  },
+
+  CURRENT_STATE (state, payload) {
+    state.currentState = payload
   }
 }
 
@@ -56,6 +65,10 @@ export const actions = {
 
   setAutoStart ({ commit }, autoStart) {
     commit('AUTO_START', autoStart)
+  },
+
+  setCurrentState ({ commit }, payload) {
+    commit('CURRENT_STATE', payload)
   }
 }
 
