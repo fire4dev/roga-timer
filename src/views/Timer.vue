@@ -49,9 +49,6 @@ export default {
       LongBreakTimeCount: 0
     }
   },
-  created () {
-    setInterval(this.getNow, 1000)
-  },
   beforeMount () {
     this.totalTime = this.focusTime * 60
     // if (this.autoStart) { this.startTimer() }
