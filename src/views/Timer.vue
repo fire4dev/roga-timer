@@ -64,7 +64,7 @@ export default {
       this.resetButton = true
     },
     stopTimer () {
-      // clearInterval(this.timer) // this feature can be activated by user on settings screen
+      clearInterval(this.timer) // this feature can be activated by user on settings screen
       this.timer = null
       this.resetButton = true
     },
