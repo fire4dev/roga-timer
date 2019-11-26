@@ -49,7 +49,6 @@ export default {
       LongBreakTimeCount: 0
     }
   },
-
   beforeMount () {
     this.totalTime = this.focusTime * 60
     // if (this.autoStart) { this.startTimer() }
@@ -65,7 +64,7 @@ export default {
       this.resetButton = true
     },
     stopTimer () {
-      clearInterval(this.timer)
+      clearInterval(this.timer) // this feature can be activated by user on settings screen
       this.timer = null
       this.resetButton = true
     },
@@ -104,12 +103,19 @@ export default {
         this.startTimer()
       }
     },
+    countdownSoundEffect () {
+      var sound = new Audio(require('../assets/bip_countdown.mp3'))
+      if (this.minutes < 1 && this.seconds <= 5) {
+        sound.play()
+      }
+    },
     padTime (time) {
       return (time < 10 ? '0' : '') + time
     },
     countdown () {
       if (this.totalTime >= 1) {
         this.totalTime--
+        this.countdownSoundEffect()
       } else {
         this.totalTime = 0
         this.resetTimer()
