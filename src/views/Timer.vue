@@ -47,7 +47,7 @@ export default {
       focusTimeCount: 1,
       breakTimeCount: 0,
       LongBreakTimeCount: 0,
-      sound: new Audio(require('../assets/bip_countdown-[AudioTrimmer.com].mp3'))
+      sound: new Audio(require('../assets/bip_countdown.mp3'))
     }
   },
   beforeMount () {
