@@ -27,6 +27,10 @@
       <v-btn icon round dark @click="forwardTimer" x-large>
         <v-icon>mdi-check</v-icon>
       </v-btn>
+
+      <v-btn icon round dark @click.stop="showSettings" x-large>
+        <v-icon>mdi-settings</v-icon>
+      </v-btn>
     </div>
   </section>
 </template>
@@ -47,7 +51,8 @@ export default {
       focusTimeCount: 1,
       breakTimeCount: 0,
       LongBreakTimeCount: 0,
-      sound: new Audio(require('../assets/bip_countdown.mp3'))
+      sound: new Audio(require('../assets/bip_countdown.mp3')),
+      toggleSettings: false
     }
   },
   beforeMount () {
@@ -60,6 +65,10 @@ export default {
   },
 
   methods: {
+    showSettings: function () {
+      this.toggleSettings = !this.toggleSettings
+      this.$store.dispatch('setDrawer', this.toggleSettings)
+    },
     startTimer () {
       this.timer = setInterval(() => this.countdown(), 1000)
       this.resetButton = true

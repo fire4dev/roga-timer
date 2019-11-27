@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer app :value="showDrawer">
-
+      <SettingScreen/>
     </v-navigation-drawer>
 
     <v-content :class="currentColor">
@@ -14,8 +14,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import SettingScreen from '@/components/SettingScreen.vue'
 
 export default {
+  name: 'home',
+  components: {
+    SettingScreen
+  },
   computed: {
     ...mapGetters({
       timerState: 'timer/currentState'
