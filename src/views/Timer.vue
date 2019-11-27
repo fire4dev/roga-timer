@@ -46,7 +46,8 @@ export default {
       inLongBreakTime: false,
       focusTimeCount: 1,
       breakTimeCount: 0,
-      LongBreakTimeCount: 0
+      LongBreakTimeCount: 0,
+      sound: new Audio(require('../assets/bip_countdown-[AudioTrimmer.com].mp3'))
     }
   },
   beforeMount () {
@@ -103,19 +104,20 @@ export default {
         this.startTimer()
       }
     },
-    countdownSoundEffect () {
-      var sound = new Audio(require('../assets/bip_countdown.mp3'))
-      if (this.minutes < 1 && this.seconds <= 5) {
-        sound.play()
-      }
+
+    async playSound () {
+      this.sound.play()
     },
+
     padTime (time) {
       return (time < 10 ? '0' : '') + time
     },
     countdown () {
       if (this.totalTime >= 1) {
         this.totalTime--
-        this.countdownSoundEffect()
+        if ((this.minutes < 1) && this.seconds <= 5) {
+          this.playSound()
+        }
       } else {
         this.totalTime = 0
         this.resetTimer()
